@@ -27,34 +27,84 @@ double eventTriggered(double interval) {
 struct PacMan {
 public:
     Vector2 startPos = {offset + static_cast<float>(cellSize*cellCount/2), offset + static_cast<float>(cellSize*cellCount/2)};
+    /* 
+    (1,0) right
+    (0,1) down
+    (-1,0) left
+    (0,-1)up
+    */
+    Vector2 direction = {0, 0};
 
+    void SetDirection() 
+    {
+        if(IsKeyPressed(KEY_UP)) 
+        {
+            direction = {0, -1};
+        }
+
+        if(IsKeyPressed(KEY_DOWN)) 
+        {
+            direction = {0, 1};
+        }
+
+        if(IsKeyPressed(KEY_LEFT)) 
+        {
+            direction = {-1, 0};
+        }
+
+        if(IsKeyPressed(KEY_RIGHT)) 
+        {
+            direction = {1, 0};
+        }
+    }
     void Draw()
     {
         DrawCircleV(startPos, cellSize/2 - 2, yellow);
     }
 
-    void DrawMouth(Color color, int open) 
+    void DrawMouth(Color color, int open, Vector2 direction) 
     {
+        float startAngle = 0.0;
+        float endAngle = 0.0;
+        Draw();
         if ((open >= 3) || (open < 0))
         {
             std::cout <<"invalid parameter open:"<<open<<std::endl;
         }
-        else 
+        else if(direction.x == 1 && direction.y == 0)
         {
-            if (open == 0)
-            {
-                DrawCircleSector(startPos, cellSize/2 -2, -15, 15, 10, color);
-            }
-            else if (open == 1)
-            {
-                 DrawCircleSector(startPos, cellSize/2 -2, -45, 45, 10, color);
-            }
-            else if (open == 2)
-            {
-                 DrawCircleSector(startPos, cellSize/2 -2, -15, 15, 10, color);
-            }
+            startAngle = -15;
+            endAngle = 15;
         }
-        
+        else if (direction.x == -1 && direction.y == 0)
+        {
+            startAngle = 175;
+            endAngle = 195;
+        }
+
+        else if (direction.x == 0 && direction.y == -1)
+        {
+            startAngle = 255;
+            endAngle = 285;
+        }
+        else if (direction.x == 0 && direction.y == 1)
+        {
+            startAngle = 75;
+            endAngle = 105;
+        }
+
+        if (open == 0)
+        {
+            DrawCircleSector(startPos, cellSize/2 -2, startAngle, endAngle, 10, color);
+        }
+        else if (open == 1)
+        {
+            DrawCircleSector(startPos, cellSize/2 -2, startAngle - 30, endAngle + 30, 10, color);
+        }
+        else if (open == 2)
+        {
+            DrawCircleSector(startPos, cellSize/2 -2, startAngle, endAngle, 10, color);
+        }
         //DrawCircleSector(Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color);
     }
     void Animate() 
@@ -69,7 +119,7 @@ public:
         //Draw();
         if(mouthOpen < 3)
         {
-            DrawMouth(black, mouthOpen);       
+            DrawMouth(black, mouthOpen, direction);       
         }
         else
         {
@@ -166,7 +216,7 @@ int main () {
         Rectangle border = {static_cast<float>(offset-5), static_cast<float>(offset-5), static_cast<float>(cellSize*cellCount+10), static_cast<float>(cellSize*cellCount+10)};
         DrawRectangleLinesEx(border, 3, darkBlue);
         //pacman.Draw();
-
+        pacman.SetDirection();
         pacman.Animate();
         maze.Draw();
         //ClearBackground(black);
