@@ -24,9 +24,22 @@ double eventTriggered(double interval) {
     return false;
 }
 
+Vector2 operator *(Vector2 &vec, int i)
+{
+    vec.x = vec.x * i;
+    vec.y = vec.y * i;
+    return vec;
+}
+
+Vector2 operator +=(Vector2 &des, const Vector2 &source)
+{
+    des.x = des.x + source.x;
+    des.y = des.y + source.y;
+    return des;
+}
 struct PacMan {
 public:
-    Vector2 startPos = {offset + static_cast<float>(cellSize*cellCount/2), offset + static_cast<float>(cellSize*cellCount/2)};
+    Vector2 currentPos = {offset + static_cast<float>(cellSize*cellCount/2), offset + static_cast<float>(cellSize*cellCount/2)};
     /* 
     (1,0) right
     (0,1) down
@@ -35,6 +48,15 @@ public:
     */
     Vector2 direction = {0, 0};
 
+    void Move()
+    {
+        if(eventTriggered(0.2)) 
+        {
+            Draw(black);
+            currentPos += (direction * 2);
+            Draw(yellow);
+        } 
+    }
     void SetDirection() 
     {
         if(IsKeyPressed(KEY_UP)) 
@@ -56,17 +78,18 @@ public:
         {
             direction = {1, 0};
         }
+        Move();
     }
-    void Draw()
+    void Draw(Color color)
     {
-        DrawCircleV(startPos, cellSize/2 - 2, yellow);
+        DrawCircleV(currentPos, cellSize/2 - 2, color);
     }
 
     void DrawMouth(Color color, int open, Vector2 direction) 
     {
         float startAngle = 0.0;
         float endAngle = 0.0;
-        Draw();
+        Draw(yellow);
         if ((open >= 3) || (open < 0))
         {
             std::cout <<"invalid parameter open:"<<open<<std::endl;
@@ -95,15 +118,15 @@ public:
 
         if (open == 0)
         {
-            DrawCircleSector(startPos, cellSize/2 -2, startAngle, endAngle, 10, color);
+            DrawCircleSector(currentPos, cellSize/2 -2, startAngle, endAngle, 10, color);
         }
         else if (open == 1)
         {
-            DrawCircleSector(startPos, cellSize/2 -2, startAngle - 30, endAngle + 30, 10, color);
+            DrawCircleSector(currentPos, cellSize/2 -2, startAngle - 30, endAngle + 30, 10, color);
         }
         else if (open == 2)
         {
-            DrawCircleSector(startPos, cellSize/2 -2, startAngle, endAngle, 10, color);
+            DrawCircleSector(currentPos, cellSize/2 -2, startAngle, endAngle, 10, color);
         }
         //DrawCircleSector(Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color);
     }
@@ -123,7 +146,7 @@ public:
         }
         else
         {
-            Draw();
+            Draw(yellow);
         }
     }
 };
@@ -218,7 +241,12 @@ int main () {
         //pacman.Draw();
         pacman.SetDirection();
         pacman.Animate();
-        maze.Draw();
+       // if(drawMazeOnce) 
+        {
+            maze.Draw();
+            drawMazeOnce = false;
+        }
+
         //ClearBackground(black);
         EndDrawing();
     }
