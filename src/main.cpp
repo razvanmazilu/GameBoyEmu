@@ -1,5 +1,6 @@
 #include <iostream>
 #include <raylib.h>
+#include<thread>
 
 int offset = 20;
 int cellSize = 20;
@@ -50,11 +51,13 @@ public:
 
     void Move()
     {
-        if(eventTriggered(0.2)) 
-        {
-            Draw(black);
-            currentPos += (direction * 2);
-            Draw(yellow);
+        //Draw(black);
+        if(eventTriggered(0.4)) 
+        { 
+            currentPos.x = currentPos.x + 4*direction.x;
+            currentPos.y = currentPos.y + 4*direction.y;
+            std::cout<< "2*direction:(" << 2* direction.x <<", "<<2*direction.y << ")"<<std::endl;
+            std::cout<< "currentPos:(" << currentPos.x <<", "<<currentPos.y << ")"<<std::endl;
         } 
     }
     void SetDirection() 
@@ -78,7 +81,6 @@ public:
         {
             direction = {1, 0};
         }
-        Move();
     }
     void Draw(Color color)
     {
@@ -232,6 +234,7 @@ int main () {
     PacMan pacman;
     Maze maze;
     bool drawMazeOnce = true;
+    
     while(WindowShouldClose() == false){
 
         BeginDrawing();
@@ -241,15 +244,18 @@ int main () {
         //pacman.Draw();
         pacman.SetDirection();
         pacman.Animate();
+        std::thread t_Move(&PacMan::Move, &pacman);
        // if(drawMazeOnce) 
         {
             maze.Draw();
             drawMazeOnce = false;
         }
 
-        //ClearBackground(black);
+        ClearBackground(black);
         EndDrawing();
+        t_Move.join();
     }
+    
     CloseWindow();
     return 0;
 }
