@@ -13,5 +13,6 @@ public:
     Screen(int height, int width);
     void Draw(Vector2 startPos);
     void Reset();
+    void ChangePixelState(Vector2 pixel);
 
 };

@@ -11,6 +11,9 @@ int main () {
     
     Screen scr = Screen(144,160);
     Vector2 startPos{10,10};
+    scr.ChangePixelState({10,10});
+    scr.ChangePixelState({10,20});
+    scr.ChangePixelState({20,20});
     while(WindowShouldClose() == false){
 
         BeginDrawing();
