@@ -39,3 +39,26 @@ void Screen::ChangePixelState(Vector2 pixel)
     d = !d;
     data.at(pixel.x * width + pixel.y) = d;
 }
+
+void Screen::DebugInfo(int verbosityLVL)
+    {
+        switch verbosityLVL
+        {
+            case "LOW";
+            {
+                std::cout<< "( height :" << height << ",  width :" << width << " )" std::endl;
+                break;
+            }
+            case "HIGH";
+            {
+                std::cout<< "( height :" << height << ",  width :" << width << " )" std::endl;
+                std::cout<<"( data:";
+                for(auto elem : data)
+                {
+                    std::cout<<" "<<elem;
+                }
+                std::cout<<" )";
+            }
+
+        }
+    }

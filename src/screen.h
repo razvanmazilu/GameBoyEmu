@@ -1,6 +1,9 @@
+#pragma once
 #include <raylib.h>
 #include <raymath.h>
+#include <iostream>
 #include<vector>
+#include"common.h"
 
 class Screen
 {
@@ -15,4 +18,5 @@ public:
     void Reset();
     void ChangePixelState(Vector2 pixel);
 
+    void DebugInfo(int verbosityLVL);
 };
