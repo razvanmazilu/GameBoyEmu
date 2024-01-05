@@ -42,16 +42,16 @@ void Screen::ChangePixelState(Vector2 pixel)
 
 void Screen::DebugInfo(int verbosityLVL)
     {
-        switch verbosityLVL
+        switch (verbosityLVL)
         {
-            case "LOW";
+            case LOW:
             {
-                std::cout<< "( height :" << height << ",  width :" << width << " )" std::endl;
+                std::cout<< "( height :" << height << ",  width :" << width << " )" << std::endl;
                 break;
             }
-            case "HIGH";
+            case HIGH:
             {
-                std::cout<< "( height :" << height << ",  width :" << width << " )" std::endl;
+                std::cout<< "( height :" << height << ",  width :" << width << " )" << std::endl;
                 std::cout<<"( data:";
                 for(auto elem : data)
                 {

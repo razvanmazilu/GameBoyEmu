@@ -5,8 +5,8 @@
 
 class Button {
 public:
-    void SetName(String _name);
-    String GetName();
+    void SetName(std::string _name);
+    std::string GetName();
     void SetPosition(Vector2 _pos);
     Vector2 GetPosition();
     void SetState(bool _state);
@@ -18,7 +18,7 @@ public:
     void DebugInfo(int verbosityLVL);
 
 private:
-    String name;
+    std::string name;
     Vector2 position;
     bool state;
 
