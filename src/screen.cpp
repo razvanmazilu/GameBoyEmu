@@ -14,6 +14,7 @@ Screen::Screen(int height, int width)
 void Screen::Draw(Vector2 startPos)
 {
     DrawRectangleLines(startPos.x, startPos.y, 2*width, 2*height, WHITE);
+    
     int index = 0;
     for(auto it = data.begin(); it != data.end(); it++)
     {
@@ -23,8 +24,18 @@ void Screen::Draw(Vector2 startPos)
             DrawRectangle(2*(index/width), 2*(index%height),2 ,2, WHITE);
         }
     }
+}
 
+void Screen::DebugDraw(Vector2 startPos)
+{
+    static int roll = 0;
 
+    DrawRectangle(startPos.x+1, startPos.y+1+ (roll   %4)*(2*height -2)/4, (2*width-2), (2*height -2)/4, constants::darkestGreen);
+    DrawRectangle(startPos.x+1, startPos.y+1+((roll+1)%4)*(2*height -2)/4, (2*width-2), (2*height -2)/4, constants::darkGreen);
+    DrawRectangle(startPos.x+1, startPos.y+1+((roll+2)%4)*(2*height -2)/4, (2*width-2), (2*height -2)/4, constants::lightGreen);
+    DrawRectangle(startPos.x+1, startPos.y+1+((roll+3)%4)*(2*height -2)/4, (2*width-2), (2*height -2)/4, constants::lightestGreen);
+    
+    roll++;
 }
 
 void Screen::Reset()
